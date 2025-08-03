@@ -1,0 +1,10 @@
+
+{
+  "name": "bible-study-shared",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "drizzle-orm": "^0.30.0",
+    "zod": "^3.22.0"
+  }
+}
