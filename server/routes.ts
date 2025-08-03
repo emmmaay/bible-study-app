@@ -291,6 +291,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.json({ message: "Note deleted successfully" });
   });
 
+  // Create first admin (only if no admins exist)
+  app.post("/api/admin/create-first", async (req, res) => {
+    try {
+      const { email, password, name, secretKey } = req.body;
+      
+      // Check secret key to prevent unauthorized admin creation
+      if (secretKey !== process.env.ADMIN_SETUP_SECRET) {
+        return res.status(403).json({ message: "Invalid setup secret" });
+      }
+      
+      // Check if any admin already exists
+      const existingAdmins = await storage.getAllUsers();
+      const hasAdmin = existingAdmins.some(u => u.role === 'admin' || u.role === 'super_admin');
+      
+      if (hasAdmin) {
+        return res.status(400).json({ message: "Admin already exists" });
+      }
+      
+      // Create first admin
+      const userData = { email, password, name, role: 'super_admin' as const };
+      const admin = await storage.createUser(userData);
+      
+      res.json({ message: "First admin created successfully", admin: { ...admin, password: undefined } });
+    } catch (error: any) {
+      res.status(400).json({ message: error.message });
+    }
+  });
+
   // Admin routes
   app.get("/api/admin/stats", authenticateToken, requireAdmin, async (req, res) => {
     const stats = await storage.getAdminStats();

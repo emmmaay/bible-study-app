@@ -12,10 +12,9 @@
    - Vercel will auto-deploy
    - Or run `vercel --prod` for production
 
-## Admin Login Credentials:
+## Admin Setup:
 
-**Email:** admin@biblestudypro.com  
-**Password:** admin123
+After deployment, create your first admin user through the registration process, then manually update their role in the database to 'admin' or 'super_admin'.
 
 ## Environment Variables (if needed):
 - NODE_ENV=production
