@@ -5,9 +5,10 @@ run = "is all of these correct"
 channel = "stable-25_05"
 
 [deployment]
-run = ["sh", "-c", "is all of these correct"]
+run = ["sh", "-c", "cd server && npm start"]
 
 [workflows]
+runButton = "Start App"
 
 [[workflows.workflow]]
 name = "Production Build"
@@ -21,3 +22,12 @@ args = "cd client && npm run build"
 [[workflows.workflow.tasks]]
 task = "shell.exec"
 args = "cd ../server && npm start"
+
+[[workflows.workflow]]
+name = "Start App"
+author = 45912667
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd server && npm install && npm start"
