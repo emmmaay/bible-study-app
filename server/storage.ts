@@ -12,7 +12,7 @@ import {
   type Note,
   type InsertNote,
   type UserWithStats
-} from "@shared/schema";
+} from "../shared/schema.js";
 import { randomUUID } from "crypto";
 import bcrypt from "bcrypt";
 
@@ -24,7 +24,7 @@ export interface IStorage {
   updateUser(id: string, user: Partial<User>): Promise<User | undefined>;
   getAllUsers(): Promise<User[]>;
   getUserWithStats(id: string): Promise<UserWithStats | undefined>;
-  
+
   // Classes
   getClass(id: string): Promise<Class | undefined>;
   getAllClasses(): Promise<Class[]>;
@@ -32,7 +32,7 @@ export interface IStorage {
   createClass(classData: InsertClass): Promise<Class>;
   updateClass(id: string, classData: Partial<Class>): Promise<Class | undefined>;
   deleteClass(id: string): Promise<boolean>;
-  
+
   // Bible Characters
   getCharacter(id: string): Promise<BibleCharacter | undefined>;
   getAllCharacters(): Promise<BibleCharacter[]>;
@@ -40,25 +40,25 @@ export interface IStorage {
   createCharacter(character: InsertCharacter): Promise<BibleCharacter>;
   updateCharacter(id: string, character: Partial<BibleCharacter>): Promise<BibleCharacter | undefined>;
   deleteCharacter(id: string): Promise<boolean>;
-  
+
   // User Progress
   getUserProgress(userId: string): Promise<UserProgress[]>;
   getClassProgress(userId: string, classId: string): Promise<UserProgress | undefined>;
   createProgress(progress: InsertProgress): Promise<UserProgress>;
   updateProgress(id: string, progress: Partial<UserProgress>): Promise<UserProgress | undefined>;
-  
+
   // Bookmarks
   getUserBookmarks(userId: string): Promise<Bookmark[]>;
   createBookmark(bookmark: InsertBookmark): Promise<Bookmark>;
   deleteBookmark(id: string): Promise<boolean>;
-  
+
   // Notes
   getUserNotes(userId: string): Promise<Note[]>;
   getClassNotes(userId: string, classId?: string, characterId?: string): Promise<Note[]>;
   createNote(note: InsertNote): Promise<Note>;
   updateNote(id: string, note: Partial<Note>): Promise<Note | undefined>;
   deleteNote(id: string): Promise<boolean>;
-  
+
   // Admin functions
   getAdminStats(): Promise<{
     totalUsers: number;
@@ -162,7 +162,7 @@ export class MemStorage implements IStorage {
   async updateUser(id: string, userData: Partial<User>): Promise<User | undefined> {
     const user = this.users.get(id);
     if (!user) return undefined;
-    
+
     const updatedUser = { ...user, ...userData };
     this.users.set(id, updatedUser);
     return updatedUser;
@@ -379,7 +379,7 @@ export class MemStorage implements IStorage {
       const userProgress = Array.from(this.progress.values()).filter(p => p.userId === u.id);
       return userProgress.some(p => p.createdAt > new Date(Date.now() - 7 * 24 * 60 * 60 * 1000));
     }).length;
-    
+
     const completedClasses = Array.from(this.progress.values()).filter(p => p.isCompleted).length;
     const allProgress = Array.from(this.progress.values());
     const averageProgress = allProgress.length > 0 

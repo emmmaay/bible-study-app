@@ -6,12 +6,17 @@ import { registerRoutes } from "./routes.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://your-app.vercel.app'] 
+    : ['http://localhost:3000'],
+  credentials: true
+}));
 app.use(express.json());
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('public'));
+  app.use(express.static('../client/dist'));
 }
 
 registerRoutes(app).then((server) => {

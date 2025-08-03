@@ -12,7 +12,7 @@ import {
   insertBookmarkSchema,
   insertNoteSchema,
   type User 
-} from "@shared/schema";
+} from "../shared/schema.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "bible-study-secret-key";
 
