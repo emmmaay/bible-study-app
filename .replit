@@ -6,3 +6,18 @@ channel = "stable-25_05"
 
 [deployment]
 run = ["sh", "-c", "is all of these correct"]
+
+[workflows]
+
+[[workflows.workflow]]
+name = "Production Build"
+author = 45912667
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd client && npm run build"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "cd ../server && npm start"
