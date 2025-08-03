@@ -15,9 +15,9 @@ npx esbuild server/index.ts --platform=node --packages=external --bundle --forma
 echo "Copying shared files..."
 cp -r shared dist/
 
-# Create the correct public directory structure for the server
+# Create public directory at server level (where serveStatic expects it)
 echo "Setting up static assets for production..."
-mkdir -p dist/server
-cp -r dist/public dist/server/
+mkdir -p server/public
+cp -r dist/public/* server/public/
 
 echo "Build complete! Ready for Vercel deployment."
