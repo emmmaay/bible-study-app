@@ -81,6 +81,19 @@ export class MemStorage implements IStorage {
   }
 
   private async initializeData() {
+    // Create default admin user
+    const adminId = randomUUID();
+    const hashedPassword = await bcrypt.hash('admin123', 10);
+    const adminUser: User = {
+      id: adminId,
+      name: 'Super Admin',
+      email: 'admin@biblestudypro.com',
+      password: hashedPassword,
+      role: 'super_admin',
+      createdAt: new Date(),
+    };
+    this.users.set(adminId, adminUser);
+
     // Create sample classes structure
     const sections = [
       { name: "Foundations of Faith", classes: 4 },
